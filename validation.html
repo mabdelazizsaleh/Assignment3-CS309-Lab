@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+</head>
+<body>
+
+    <h1>Registration Form</h1>
+
+    <form id="signup">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name">
+        <p id="nameError"></p>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email">
+        <p id="emailError"></p>
+
+        <label for="pass">Password:</label>
+        <input type="password" id="pass">
+        <p id="passError"></p>
+
+        <label for="confirm">Confirm Password:</label>
+        <input type="password" id="confirm">
+        <p id="confirmError"></p>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age">
+        <p id="ageError"></p>
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <p id="msg"></p>
+
+    <script>
+        const form = document.querySelector("#signup");
+        const msg = document.querySelector("#msg");
+
+        form.addEventListener("submit", (event) => {
+
+            event.preventDefault();
+
+            const name = document.querySelector("#name").value.trim();
+            const email = document.querySelector("#email").value.trim();
+            const pass = document.querySelector("#pass").value;
+            const confirm = document.querySelector("#confirm").value;
+            const age = Number(document.querySelector("#age").value);
+
+            document.querySelector("#nameError").textContent = "";
+            document.querySelector("#emailError").textContent = "";
+            document.querySelector("#passError").textContent = "";
+            document.querySelector("#confirmError").textContent = "";
+            document.querySelector("#ageError").textContent = "";
+            msg.textContent = "";
+
+            let valid = true;
+
+            if (name === "") {
+                document.querySelector("#nameError").textContent =
+                    "Name is required.";
+                valid = false;
+            }
+
+            const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!pattern.test(email)) {
+                document.querySelector("#emailError").textContent =
+                    "Please enter a valid email.";
+                valid = false;
+            }
+
+            if (pass.length < 8) {
+                document.querySelector("#passError").textContent =
+                    "Password must be at least 8 characters.";
+                valid = false;
+            }
+
+            if (confirm === "" || confirm !== pass) {
+                document.querySelector("#confirmError").textContent =
+                    "Passwords do not match.";
+                valid = false;
+            }
+
+            if (document.querySelector("#age").value === "" ||
+                isNaN(age) || age < 1 || age > 100) {
+                document.querySelector("#ageError").textContent =
+                    "Age must be between 1 and 100.";
+                valid = false;
+            }
+
+            if (!valid) {
+                return;
+            }
+
+            msg.textContent = "Registration successful!";
+            form.reset();
+
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>People Table</title>
+</head>
+<body>
+
+    <h1>People Table</h1>
+
+    <label for="search">Search:</label>
+    <input type="text" id="search" placeholder="Search people">
+
+    <button id="sortName">Sort by Name</button>
+    <button id="sortAge">Sort by Age</button>
+
+    <br><br>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+            </tr>
+        </thead>
+
+        <tbody id="tableBody"></tbody>
+    </table>
+
+    <script>
+        // Array of objects
+        const people = [
+            { name: "Ali", age: 22, city: "Cairo" },
+            { name: "Sara", age: 19, city: "Alexandria" },
+            { name: "Omar", age: 25, city: "Giza" },
+            { name: "Mona", age: 21, city: "Cairo" },
+            { name: "Adam", age: 30, city: "Giza" }
+        ];
+
+        const table = document.querySelector("#tableBody");
+        const search = document.querySelector("#search");
+
+        // Show the data in the table
+        function showTable(list) {
+
+            table.innerHTML = "";
+
+            list.forEach(person => {
+
+                const row = document.createElement("tr");
+
+                const name = document.createElement("td");
+                name.textContent = person.name;
+
+                const age = document.createElement("td");
+                age.textContent = person.age;
+
+                const city = document.createElement("td");
+                city.textContent = person.city;
+
+                row.appendChild(name);
+                row.appendChild(age);
+                row.appendChild(city);
+
+                table.appendChild(row);
+
+            });
+        }
+
+        // Search while typing
+        search.addEventListener("input", () => {
+
+            const text = search.value.toLowerCase();
+
+            const result = people.filter(person =>
+                person.name.toLowerCase().includes(text) ||
+                person.city.toLowerCase().includes(text) ||
+                person.age.toString().includes(text)
+            );
+
+            showTable(result);
+
+        });
+
+        // Sort by name
+        document.querySelector("#sortName")
+            .addEventListener("click", () => {
+
+                people.sort((a, b) =>
+                    a.name.localeCompare(b.name)
+                );
+
+                search.dispatchEvent(new Event("input"));
+
+            });
+
+        // Sort by age
+        document.querySelector("#sortAge")
+            .addEventListener("click", () => {
+
+                people.sort((a, b) => a.age - b.age);
+
+                search.dispatchEvent(new Event("input"));
+
+            });
+
+        // Show all people when the page opens
+        showTable(people);
+
+    </script>
+
+</body>
+</html>
